@@ -2,80 +2,6 @@ package main
 
 import "fmt"
 
-type pair struct {
-	idx   int
-	count int
-}
-
-type priorityQueue struct {
-	queue   []*pair
-	compare func(a, b *pair) int
-}
-
-func (q *priorityQueue) addAll(items ...*pair) {
-	for _, item := range items {
-		q.add(item)
-	}
-}
-
-func (q *priorityQueue) add(item *pair) {
-	q.queue = append(q.queue, item)
-	k := len(q.queue) - 1
-	for k > 0 {
-		parent := (k - 1) >> 1
-		if q.compare(item, q.queue[parent]) >= 0 {
-			break
-		}
-		q.queue[k] = q.queue[parent]
-		k = parent
-	}
-	q.queue[k] = item
-}
-
-func (q *priorityQueue) isEmpty() bool {
-	return len(q.queue) == 0
-}
-
-func (q *priorityQueue) peek() *pair {
-	if len(q.queue) > 0 {
-		return q.queue[0]
-	}
-	return nil
-}
-
-func (q *priorityQueue) poll() *pair {
-	size := len(q.queue)
-	if size > 0 {
-		result := q.queue[0]
-		size--
-		x := q.queue[size]
-		q.queue = q.queue[:size]
-
-		if size > 0 {
-			k := 0
-			half := size >> 1
-			for k < half {
-				child := (k << 1) + 1
-				c := q.queue[child]
-				right := child + 1
-				if right < size && q.compare(c, q.queue[right]) > 0 {
-					child = right
-					c = q.queue[child]
-				}
-				if q.compare(x, c) <= 0 {
-					break
-				}
-				q.queue[k] = c
-				k = child
-			}
-			q.queue[k] = x
-		}
-
-		return result
-	}
-	return nil
-}
-
 func findMinMoves(machines []int) int {
 	total := 0
 	size := len(machines)
@@ -105,13 +31,6 @@ func abs(x int) int {
 
 func max(a, b int) int {
 	if a > b {
-		return a
-	}
-	return b
-}
-
-func min(a, b int) int {
-	if a < b {
 		return a
 	}
 	return b

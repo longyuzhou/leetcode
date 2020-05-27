@@ -1,50 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-func toList(head *ListNode) []int {
-	res := []int{}
-	for head != nil {
-		res = append(res, head.Val)
-		head = head.Next
-	}
-	return res
-}
-
-func toLinkedList(nums []int) *ListNode {
-	var head *ListNode
-	if len(nums) > 0 {
-		head = &ListNode{Val: nums[0]}
-		p := head
-		for i := 1; i < len(nums); i++ {
-			p.Next = &ListNode{Val: nums[i]}
-			p = p.Next
-		}
-	}
-	return head
-}
-
-func sameList(nums1 []int, nums2 []int) bool {
-	if len(nums1) != len(nums2) {
-		return false
-	}
-	for i, num := range nums1 {
-		if num != nums2[i] {
-			return false
-		}
-	}
-	return true
-}
+	utils "github.com/longyuzhou/leetcode"
+)
 
 func test(nums []int, x int, expect []int) {
-	head := partition(toLinkedList(nums), x)
-	actual := toList(head)
-	if !sameList(expect, actual) {
+	head := partition(utils.ListToLinkedList(nums), x)
+	actual := utils.LinkedListToList(head)
+	if !utils.SameList(expect, actual) {
 		fmt.Printf("fail! expect %v, got %v\n", expect, actual)
 	} else {
 		fmt.Println("pass")
@@ -52,10 +17,10 @@ func test(nums []int, x int, expect []int) {
 }
 
 // 问题：给链表分区，小于指定值的排在前面，大于等于的排后面，同时保持原顺序不变
-func partition(head *ListNode, x int) *ListNode {
-	h1 := &ListNode{}
+func partition(head *utils.ListNode, x int) *utils.ListNode {
+	h1 := &utils.ListNode{}
 	t1 := h1
-	h2 := &ListNode{}
+	h2 := &utils.ListNode{}
 	t2 := h2
 
 	p := head

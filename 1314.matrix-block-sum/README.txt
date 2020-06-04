@@ -1,3 +1,5 @@
+another solution:
+
 1  2    1  3
      =>
 3  4    4 10
